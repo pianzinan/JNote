@@ -15,7 +15,7 @@
 					<div class="panel panel-default">
 					  <div class="panel-body">
 					  	<h3>
-							    <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> ${article.title}
+							    <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> ${escapeHtml(article.title)}
 					  	</h3>
 					  	<h6>${article.post_time}</h6>
 					  	<p>
@@ -34,8 +34,8 @@
 						{
 					%>
 						<li class="list-group-item">
-							<h6><strong>${comment.username}</strong>&nbsp;&nbsp;&nbsp;&nbsp;<small>${comment.post_time}</small></h6>
-							${comment.message}
+							<h6><strong>${escapeHtml(comment.username)}</strong>&nbsp;&nbsp;&nbsp;&nbsp;<small>${comment.post_time}</small></h6>
+							${escapeHtml(comment.message)}
 						</li>
 					<%
 						}
@@ -49,17 +49,18 @@
 			<div class="panel panel-default">
 				<div class="panel-body">
 					<form method="post" action="${ctx}/article/comment">
+				      <input type="hidden" class="form-control" id="article_id" name="article_id" value="${article.id}" />
 					  <div class="form-group">
 					    <label for="name">Name</label>
-					    <input type="text" class="form-control" id="name" name="name" placeholder="Jane Doe">
+					    <input type="text" class="form-control" id="name" name="name" placeholder="Your name" value="${escapeHtml(name!)}" />
 					  </div>
 					  <div class="form-group">
 					    <label for="contact">Contact</label>
-					    <input type="email" class="form-control" id="contact" name="contact" placeholder="jane.doe@example.com">
+					    <input type="text" class="form-control" id="contact" name="contact" placeholder="How can I contact you..." value="${escapeHtml(contact!)}" />
 					  </div>
 					  <div class="form-group">
 					    <label for="message">Message</label>
-					    <textarea type="text" class="form-control" id="message" id="message" rows="3" placeholder=""></textarea>
+					    <textarea type="text" class="form-control" id="message" name="message" rows="3" placeholder="" >${escapeHtml(message!)}</textarea>
 					  </div>
 					  <div class="form-group">
 					    <label for="captcha">Captcha</label>
@@ -69,6 +70,12 @@
 					    </span>
 					  </div>
 					  <button type="submit" class="btn btn-default">Leave message</button>
+					  <span id='result_label' class="form-group has-error">
+						  <label class="control-label">${error!}</label>
+					  </span>
+					  <span id='result_label' class="form-group has-success">
+						  <label class="control-label">${success!}</label>
+					  </span>
 					</form>
 				</div>
 			</div>

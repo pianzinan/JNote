@@ -8,6 +8,7 @@ import org.fuyou.jnote.model.Category;
 
 import com.jfinal.core.Controller;
 import com.jfinal.ext.render.CaptchaRender;
+import com.jfinal.log.Logger;
 
 /**
  * @Title: BaseController.java
@@ -20,23 +21,27 @@ import com.jfinal.ext.render.CaptchaRender;
  */
 public class BaseController extends Controller
 {
+	private static final Logger logger = Logger.getLogger(BaseController.class);
 	private static List<Category> categorys = new ArrayList<Category>();
 	/**
 	 * 随机码生成字典
 	 */
-	private static final String[] authCodeArray =
-	{ "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F", "G", "H", "J", "K", "M", "N", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y" };
-
+	private static final String randomKey = "randomKey";
 	public void captcha()
 	{
-		StringBuffer buffer = new StringBuffer();
-		for (int i = 0; i < 4; i++)
-		{
-			buffer.append(authCodeArray[Constants.RANDOM.nextInt(authCodeArray.length)]);
-		}
-		CaptchaRender img = new CaptchaRender(buffer.toString());
+		CaptchaRender img = new CaptchaRender(randomKey);
 		render(img);
 
+	}
+	
+	/**
+	 * 校验验证码
+	 * @param code
+	 * @return
+	 */
+	protected boolean validateCaptcha(String code)
+	{
+		return CaptchaRender.validate(this, code.toUpperCase(), randomKey);
 	}
 
 	@Override

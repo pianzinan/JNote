@@ -1,6 +1,7 @@
 package org.fuyou.jnote.controller;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.fuyou.jnote.bean.Constants;
@@ -27,14 +28,77 @@ public class ArticleController extends BaseController
 	
 	public void comment()
 	{
-		renderNull();
+		int article_id = getParaToInt("article_id", 0);
+		String name = getPara("name", "anonymous").trim();
+		String contact = getPara("contact", "").trim();
+		String captcha = getPara("captcha", "").trim();
+		String message = getPara("message", "").trim();
+		
+		Article article = Article.dao.findById(article_id);
+		
+		if(article_id<=0 || article == null)
+		{
+			setAttr("error", "error");
+			setAttr("name", name);
+			setAttr("contact", contact);
+			setAttr("message", message);
+			
+		}else if(message == null || message.length()<=0)
+		{
+			setAttr("error", "Please input message");
+			setAttr("name", name);
+			setAttr("contact", contact);
+			setAttr("message", message);
+			
+		}else if(message.length()>1024)
+		{
+			setAttr("error", "message max length is 1024");
+			setAttr("name", name);
+			setAttr("contact", contact);
+			setAttr("message", message);
+			
+		}else if(name!=null && name.length()>64)
+		{
+			setAttr("error", "name max length is 64");
+			setAttr("name", name);
+			setAttr("contact", contact);
+			setAttr("message", message);
+			
+		}else if(contact!=null && contact.length()>64)
+		{
+			setAttr("error", "contact max length is 64");
+			setAttr("name", name);
+			setAttr("contact", contact);
+			setAttr("message", message);
+			
+		}else if(!validateCaptcha(captcha))
+		{
+			setAttr("error", "Captcha error");
+			setAttr("name", name);
+			setAttr("contact", contact);
+			setAttr("message", message);
+			
+		}else
+		{
+			Comment comment = new Comment();
+			comment.set(Comment.COL_ARTICLE_ID, article_id);
+			comment.set(Comment.COL_CONTACT, contact);
+			comment.set(Comment.COL_MESSAGE, message);
+			comment.set(Comment.COL_POST_TIME, new Date());
+			comment.set(Comment.COL_USERNAME, name);
+			
+			if(comment.save())
+			{
+				setAttr("success", "success");
+			}
+			
+		}
+		
+		renderPage(article_id, 1);
 	}
 	
-	
-	public void index()
+	private void renderPage(int id,int commentPage)
 	{
-		int id = getParaToInt(0, -1);
-		int page = getParaToInt(1, 1);
 		Article article = Article.dao.findById(id);
 		
 		if(article == null)
@@ -59,11 +123,19 @@ public class ArticleController extends BaseController
 		from.append(Comment.COL_POST_TIME).append(" asc ");
 		
 		
-		Page<Comment> pages = Comment.dao.paginate(page, Constants.pageSize,select.toString(), from.toString(),params.toArray());
+		Page<Comment> pages = Comment.dao.paginate(commentPage, Constants.pageSize,select.toString(), from.toString(),params.toArray());
 		setAttr("page", pages);
 		
 		setAttr("articleId", id);
 		setAttr("article", article);
 		render("/article.html");
+	}
+	
+	
+	public void index()
+	{
+		int id = getParaToInt(0, -1);
+		int page = getParaToInt(1, 1);
+		renderPage(id, page);
 	}
 }

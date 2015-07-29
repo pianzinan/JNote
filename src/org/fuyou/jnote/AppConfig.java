@@ -1,6 +1,7 @@
 package org.fuyou.jnote;
 
 import org.beetl.ext.jfinal.BeetlRenderFactory;
+import org.fuyou.jnote.controller.AdminController;
 import org.fuyou.jnote.controller.ArticleController;
 import org.fuyou.jnote.controller.CategoryController;
 import org.fuyou.jnote.model.Article;
@@ -81,6 +82,7 @@ public class AppConfig extends JFinalConfig
 	{
 		me.add(ArticleController.ROUTE, ArticleController.class);
 		me.add(CategoryController.ROUTE, CategoryController.class);
+		me.add(AdminController.ROUTE, AdminController.class);
 	}
 
 }
