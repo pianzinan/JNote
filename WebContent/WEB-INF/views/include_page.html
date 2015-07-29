@@ -1,0 +1,53 @@
+			<nav>
+			  <ul class="pagination">
+			  	<% 
+			  		if(page.pageNumber > 1)
+			  		{ 
+			  	%>
+			    <li>
+			      <a href="${strutil.format(pageUrl,page.pageNumber-1)}" aria-label="Previous">
+			        <span aria-hidden="true">&laquo;</span>
+			      </a>
+			    </li>
+			    <%
+			    	}
+			    	
+			    	var from = page.pageNumber - 7;
+			    	var to = page.pageNumber + 7;
+			    	
+			    	if(from < 1)
+			    	{
+			    		from = 1;
+			    		to = to+1-from;
+			    	}
+			    	
+			    	if(to > page.totalPage)
+			    	{
+			    		to = page.totalPage;
+			    	}
+			    	
+					for(var i=from;i<=to;i++)
+					{
+						var cls = "";
+						if(i == page.pageNumber)
+						{
+							cls="class='active'";
+						}
+			    %>
+			    <li ${cls}><a href="${strutil.format(pageUrl,i)}">${i}</a></li>
+			  	<% 
+			  		}
+			  		
+			  		if(page.pageNumber < page.totalPage )
+			  		{ 
+			  	%>
+			    <li>
+			      <a href="${strutil.format(pageUrl,page.pageNumber+1)}" aria-label="Next">
+			        <span aria-hidden="true">&raquo;</span>
+			      </a>
+			    </li>
+			    <%
+			    	}
+			    %>
+			  </ul>
+			</nav>

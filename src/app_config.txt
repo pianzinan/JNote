@@ -1,0 +1,14 @@
+db_url = jdbc:mysql://127.0.0.1/jnote?characterEncoding=utf8&zeroDateTimeBehavior=convertToNull
+db_user = root
+db_pwd =
+
+contextPath=/JNote
+
+pageSize = 20
+
+charset=UTF-8
+
+devMode = true
+showSql = true
+
+cache_user_timeout=600000

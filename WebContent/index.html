@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>JNote</title>
+		<link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.2.0/css/bootstrap.min.css">
+		<link rel="stylesheet" href="/JNote/css/style.css">
+		<!--[if lt IE 9]>
+		<script src="http://cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+		<script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+		<![endif]-->
+	</head>
+	
+	<body>
+		<nav class="navbar navbar-default" role="navigation">
+			<div class="container">
+				<!-- Brand and toggle get grouped for better mobile display -->
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+						<span class="sr-only">Toggle navigation</span> 
+						<span class="icon-bar"></span> 
+						<span class="icon-bar"></span> 
+						<span class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand" href="#">JNote</a>
+				</div>
+		
+				<!-- Collect the nav links, forms, and other content for toggling -->
+				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+					<ul class="nav navbar-nav">
+ 						<li class='active'><a href="#">首页</a></li>
+ 						<li ><a href="#">归档</a></li>
+					</ul>
+					<form class="navbar-form navbar-left" method="get" target="_blank" action="http://www.97wly.com/search" onsubmit='return false'>
+						<div class="form-group">
+							<input id='search_kw' type="text" class="form-control" placeholder="搜索" value=""/>
+						</div>
+						<button id='btn_search' type="submit" class="btn btn-default">搜索</button>
+					</form>
+				</div>
+				<!-- /.navbar-collapse -->
+			</div>
+			<!-- /.container-fluid -->
+		</nav>
+		
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="panel panel-default">
+					  <div class="panel-body">
+					  	<h4>
+					    	<span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> Java中如何倒序输入或者随机访问文本(txt)文件
+					  	</h4>
+					  	<h6>2012-05-06</h6>
+					  	<p>
+					  	  由于业务需求，需要对一个txt文本文件进行倒序输入，比如文本内容为  "我是一个需要倒序输入的文本内容"，需要输出为 “容内本文的入输序倒要需个一是我”。
+
+  实现方法有一下几种：
+
+  1、将文本文件读入到内存为String、StringBuffer或者StringBuilder，然后进行逆向遍历，此方法比较简单，对于小文本比较有效，如果文本文件比较大，比如GB级别则一次性读入内存不现实。
+
+  2、采用RandomAccessFile进行读取，开始将文件指针定位到文件结尾，每次读取一个字符，采用seek方法将位置当前指针位置往回指个单位，这个方法需要可以实现逆向读取文本，但是当文本中含有Unicode双字节字符或者多字节字符时候，将会面临读取错误，非常大的可能会造成乱码，且频繁的操作io，会降低程序性能。
+
+  3、采用内存映射文件的方式实现，即采用RandomAccessFile + MappedByteBuffer实现，先将RandomAccessFile映射成一个MappedByteBuffer，再采用Charset进行decode成相应的编码变成CharBuffer，进而可以采用CharBuffer对文件的字符进行逆向读取，不但可以进行你想读取，还可以随机访问任意一个字符，代码如下：
+					  	</p>
+					  </div>
+					</div>
+					<div class="panel panel-default">
+					  <div class="panel-body">
+					  	<h4>
+					    	<span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> Basic panel example
+					  	</h4>
+					  	<h6>2012-05-06</h6>
+					  	<p>
+							Nunc dignissim volutpat enim, non sollicitudin purus dignissim id. Nam sit amet urna eu velit lacinia eleifend. Proin auctor rhoncus ligula nec aliquet. Donec sodales molestie lacinia. Curabitur dictum faucibus urna at convallis. Aliquam in lectus at urna rutrum porta. In lacus arcu, molestie ut vestibulum ut, rhoncus sed eros. Sed et elit vitae risus pretium consectetur vel in mi. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tempus turpis quis lectus rhoncus adipiscing. Proin pulvinar placerat suscipit. Maecenas imperdiet, quam vitae varius auctor, enim mauris vulputate sapien, nec laoreet neque diam non quam.
+					  	</p>
+					  </div>
+					</div>
+					<div class="panel panel-default">
+					  <div class="panel-body">
+					  	<h4>
+					    	<span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> Basic panel example
+					  	</h4>
+					  	<h6>2012-05-06</h6>
+					  	<p>
+							Nunc dignissim volutpat enim, non sollicitudin purus dignissim id. Nam sit amet urna eu velit lacinia eleifend. Proin auctor rhoncus ligula nec aliquet. Donec sodales molestie lacinia. Curabitur dictum faucibus urna at convallis. Aliquam in lectus at urna rutrum porta. In lacus arcu, molestie ut vestibulum ut, rhoncus sed eros. Sed et elit vitae risus pretium consectetur vel in mi. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tempus turpis quis lectus rhoncus adipiscing. Proin pulvinar placerat suscipit. Maecenas imperdiet, quam vitae varius auctor, enim mauris vulputate sapien, nec laoreet neque diam non quam.
+					  	</p>
+					  </div>
+					</div>
+					<div class="panel panel-default">
+					  <div class="panel-body">
+					  	<h4>
+					    	<span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> Basic panel example
+					  	</h4>
+					  	<h6>2012-05-06</h6>
+					  	<p>
+							Nunc dignissim volutpat enim, non sollicitudin purus dignissim id. Nam sit amet urna eu velit lacinia eleifend. Proin auctor rhoncus ligula nec aliquet. Donec sodales molestie lacinia. Curabitur dictum faucibus urna at convallis. Aliquam in lectus at urna rutrum porta. In lacus arcu, molestie ut vestibulum ut, rhoncus sed eros. Sed et elit vitae risus pretium consectetur vel in mi. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tempus turpis quis lectus rhoncus adipiscing. Proin pulvinar placerat suscipit. Maecenas imperdiet, quam vitae varius auctor, enim mauris vulputate sapien, nec laoreet neque diam non quam.
+					  	</p>
+					  </div>
+					</div>
+					<div class="panel panel-default">
+					  <div class="panel-body">
+					  	<h4>
+					    	<span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> Basic panel example
+					  	</h4>
+					  	<h6>2012-05-06</h6>
+					  	<p>
+							Nunc dignissim volutpat enim, non sollicitudin purus dignissim id. Nam sit amet urna eu velit lacinia eleifend. Proin auctor rhoncus ligula nec aliquet. Donec sodales molestie lacinia. Curabitur dictum faucibus urna at convallis. Aliquam in lectus at urna rutrum porta. In lacus arcu, molestie ut vestibulum ut, rhoncus sed eros. Sed et elit vitae risus pretium consectetur vel in mi. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tempus turpis quis lectus rhoncus adipiscing. Proin pulvinar placerat suscipit. Maecenas imperdiet, quam vitae varius auctor, enim mauris vulputate sapien, nec laoreet neque diam non quam.
+					  	</p>
+					  </div>
+					</div>
+					<div class="panel panel-default">
+					  <div class="panel-body">
+					  	<h4>
+					    	<span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> Basic panel example
+					  	</h4>
+					  	<h6>2012-05-06</h6>
+					  	<p>
+							Nunc dignissim volutpat enim, non sollicitudin purus dignissim id. Nam sit amet urna eu velit lacinia eleifend. Proin auctor rhoncus ligula nec aliquet. Donec sodales molestie lacinia. Curabitur dictum faucibus urna at convallis. Aliquam in lectus at urna rutrum porta. In lacus arcu, molestie ut vestibulum ut, rhoncus sed eros. Sed et elit vitae risus pretium consectetur vel in mi. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tempus turpis quis lectus rhoncus adipiscing. Proin pulvinar placerat suscipit. Maecenas imperdiet, quam vitae varius auctor, enim mauris vulputate sapien, nec laoreet neque diam non quam.
+					  	</p>
+					  </div>
+					</div>
+					<div class="panel panel-default">
+					  <div class="panel-body">
+					  	<h4>
+					    	<span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> Basic panel example
+					  	</h4>
+					  	<h6>2012-05-06</h6>
+					  	<p>
+							Nunc dignissim volutpat enim, non sollicitudin purus dignissim id. Nam sit amet urna eu velit lacinia eleifend. Proin auctor rhoncus ligula nec aliquet. Donec sodales molestie lacinia. Curabitur dictum faucibus urna at convallis. Aliquam in lectus at urna rutrum porta. In lacus arcu, molestie ut vestibulum ut, rhoncus sed eros. Sed et elit vitae risus pretium consectetur vel in mi. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tempus turpis quis lectus rhoncus adipiscing. Proin pulvinar placerat suscipit. Maecenas imperdiet, quam vitae varius auctor, enim mauris vulputate sapien, nec laoreet neque diam non quam.
+					  	</p>
+					  </div>
+					</div>
+					<div class="panel panel-default">
+					  <div class="panel-body">
+					  	<h4>
+					    	<span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> Basic panel example
+					  	</h4>
+					  	<h6>2012-05-06</h6>
+					  	<p>
+							Nunc dignissim volutpat enim, non sollicitudin purus dignissim id. Nam sit amet urna eu velit lacinia eleifend. Proin auctor rhoncus ligula nec aliquet. Donec sodales molestie lacinia. Curabitur dictum faucibus urna at convallis. Aliquam in lectus at urna rutrum porta. In lacus arcu, molestie ut vestibulum ut, rhoncus sed eros. Sed et elit vitae risus pretium consectetur vel in mi. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tempus turpis quis lectus rhoncus adipiscing. Proin pulvinar placerat suscipit. Maecenas imperdiet, quam vitae varius auctor, enim mauris vulputate sapien, nec laoreet neque diam non quam.
+					  	</p>
+					  </div>
+					</div>
+					<div class="panel panel-default">
+					  <div class="panel-body">
+					  	<h4>
+					    	<span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> Basic panel example
+					  	</h4>
+					  	<h6>2012-05-06</h6>
+					  	<p>
+							Nunc dignissim volutpat enim, non sollicitudin purus dignissim id. Nam sit amet urna eu velit lacinia eleifend. Proin auctor rhoncus ligula nec aliquet. Donec sodales molestie lacinia. Curabitur dictum faucibus urna at convallis. Aliquam in lectus at urna rutrum porta. In lacus arcu, molestie ut vestibulum ut, rhoncus sed eros. Sed et elit vitae risus pretium consectetur vel in mi. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tempus turpis quis lectus rhoncus adipiscing. Proin pulvinar placerat suscipit. Maecenas imperdiet, quam vitae varius auctor, enim mauris vulputate sapien, nec laoreet neque diam non quam.
+					  	</p>
+					  </div>
+					</div>
+					<div class="panel panel-default">
+					  <div class="panel-body">
+					  	<h4>
+					    	<span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> Basic panel example
+					  	</h4>
+					  	<h6>2012-05-06</h6>
+					  	<p>
+							Nunc dignissim volutpat enim, non sollicitudin purus dignissim id. Nam sit amet urna eu velit lacinia eleifend. Proin auctor rhoncus ligula nec aliquet. Donec sodales molestie lacinia. Curabitur dictum faucibus urna at convallis. Aliquam in lectus at urna rutrum porta. In lacus arcu, molestie ut vestibulum ut, rhoncus sed eros. Sed et elit vitae risus pretium consectetur vel in mi. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tempus turpis quis lectus rhoncus adipiscing. Proin pulvinar placerat suscipit. Maecenas imperdiet, quam vitae varius auctor, enim mauris vulputate sapien, nec laoreet neque diam non quam.
+					  	</p>
+					  </div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+		<script src="http://cdn.bootcss.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+	</body>
+</html>

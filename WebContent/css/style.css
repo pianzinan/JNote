@@ -1,0 +1,10 @@
+body{
+	background: #eee;
+    color: #444;
+    font-family: "Helvetica Neue", "Helvetica", Arial, sans-serif;
+    font-size: 14px;
+    text-shadow: 0 0 1px transparent;
+}
+a{
+    text-decoration: none;
+}
