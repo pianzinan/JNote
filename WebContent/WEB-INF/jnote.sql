@@ -1,19 +1,20 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : ����
-Source Server Version : 50147
+Source Server         : 本机
+Source Server Version : 50625
 Source Host           : localhost:3306
 Source Database       : jnote
 
 Target Server Type    : MYSQL
-Target Server Version : 50147
+Target Server Version : 50625
 File Encoding         : 65001
 
-Date: 2015-07-29 15:59:54
+Date: 2015-07-29 23:35:16
 */
 
 SET FOREIGN_KEY_CHECKS=0;
+
 -- ----------------------------
 -- Table structure for `t_article`
 -- ----------------------------
@@ -58,18 +59,18 @@ DROP TABLE IF EXISTS `t_comment`;
 CREATE TABLE `t_comment` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键自增',
   `username` varchar(64) DEFAULT NULL COMMENT '用户名',
-  `contact` varchar(128) DEFAULT NULL COMMENT '联系方式',
+  `contact` varchar(64) DEFAULT NULL COMMENT '联系方式',
   `message` varchar(1024) NOT NULL COMMENT '留言内容',
   `post_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '留言时间',
   `article_id` int(11) NOT NULL COMMENT '章文id',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=99 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=100 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_comment
 -- ----------------------------
 INSERT INTO `t_comment` VALUES ('1', 'xxx', 'xxxxx', 'xxxxx', '2015-07-29 15:00:18', '1');
-INSERT INTO `t_comment` VALUES ('2', '骗子男', '1023400273@qq.com', '搭建费拉飞机的萨菲辣的飞机安德鲁', '2015-07-29 15:03:23', '1');
+INSERT INTO `t_comment` VALUES ('2', '骗子男<>', '1023400273@qq.com', '搭建费拉飞机的萨菲辣的飞机安德鲁', '2015-07-29 22:23:09', '1');
 INSERT INTO `t_comment` VALUES ('3', '骗子男', '1023400273@qq.com', '搭建费拉飞机的萨菲辣的飞机安德鲁', '2015-07-29 15:03:31', '1');
 INSERT INTO `t_comment` VALUES ('4', '骗子男', '1023400273@qq.com', '搭建费拉飞机的萨菲辣的飞机安德鲁', '2015-07-29 15:03:40', '1');
 INSERT INTO `t_comment` VALUES ('5', '骗子男', '1023400273@qq.com', '搭建费拉飞机的萨菲辣的飞机安德鲁', '2015-07-29 15:03:47', '1');
@@ -166,3 +167,4 @@ INSERT INTO `t_comment` VALUES ('95', '骗子男', '1023400273@qq.com', '搭建�
 INSERT INTO `t_comment` VALUES ('96', '骗子男', '1023400273@qq.com', '搭建费拉飞机的萨菲辣的飞机安德鲁', '2015-07-29 15:04:06', '1');
 INSERT INTO `t_comment` VALUES ('97', '骗子男', '1023400273@qq.com', '搭建费拉飞机的萨菲辣的飞机安德鲁', '2015-07-29 15:04:06', '1');
 INSERT INTO `t_comment` VALUES ('98', '骗子男', '1023400273@qq.com', '搭建费拉飞机的萨菲辣的飞机安德鲁', '2015-07-29 15:04:08', '1');
+INSERT INTO `t_comment` VALUES ('99', '程序猿', '1023400273@qq.com', 'good beset', '2015-07-29 22:12:45', '1');
