@@ -27,6 +27,7 @@ public class ArticleController extends BaseController
 	
 	public void comment()
 	{
+		renderNull();
 	}
 	
 	
