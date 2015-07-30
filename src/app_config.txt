@@ -11,4 +11,6 @@ charset=UTF-8
 devMode = true
 showSql = true
 
-cache_user_timeout=600000
+#This is your username and password
+username = JNote
+password = 123456

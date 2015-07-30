@@ -41,6 +41,8 @@ public class AppConfig extends JFinalConfig
 		org.fuyou.jnote.bean.Constants.db_user = getProperty("db_user");
 		org.fuyou.jnote.bean.Constants.db_pwd = getProperty("db_pwd");
 		org.fuyou.jnote.bean.Constants.charset = getProperty("charset");
+		org.fuyou.jnote.bean.Constants.username = getProperty("username");
+		org.fuyou.jnote.bean.Constants.password = getProperty("password");
 		org.fuyou.jnote.bean.Constants.contextPath = getProperty("contextPath");
 		org.fuyou.jnote.bean.Constants.pageSize = getPropertyToInt("pageSize",20);
 		

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	<%include("/WEB-INF/views/admin/include_head.html"){}%>
+	</head>
+  <body class="skin-blue sidebar-mini">
+    <div class="wrapper">
+
+	<%include("/WEB-INF/views/admin/include_menu.html"){}%>
+     
+
+      <div class="content-wrapper">
+        <section class="content-header">
+          <h1>
+            Artilces
+            <small>This is your article list</small>
+            <button class="btn btn-success btn-xs">New</button>
+          </h1>
+          <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Level</a></li>
+            <li class="active">Here</li>
+          </ol>
+        </section>
+          
+			<div class="panel-body">
+	          <form class="form-inline" method="get" action="${ctx}/admin/articles">
+				  <div class="form-group">
+				    <label for="keywords">Search</label>
+				    <input type="text" class="form-control" name="keywords" placeholder="Keywords" value="${keywords!}">
+				  </div>
+				  <select class="form-control" name="categoryId">
+					  <option value="0">All</option>
+						<%
+							for(category in categorys)
+							{
+						%>
+						  <option value="${category.id}">${category.name}</option>
+						<%
+							}
+						%>
+					</select>
+				  <button type="submit" class="btn btn-default">Search</button>
+			  </form>
+			 </div>
+
+        <section class="content">
+	        <div class="table-responsive">
+			  <table class="table">
+                    <thead>
+                      <tr>
+                        <th>#</th>
+                        <th>Title</th>
+                        <th>Post time</th>
+                        <th>Category</th>
+                        <th>Tags</th>
+                        <th>Managae</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+					<%
+						for(article in page.list)
+						{
+					%>
+                      <tr>
+                        <td>${article.id}</td>
+                        <td><a href="${ctx}/article/${article.id}" target="_blank">${article.title}</a> </td>
+                        <td>${article.post_time}</td>
+                        <td><a href="${ctx}/category/${article.category_id}" target="_blank">${@org.fuyou.jnote.controller.CategoryController.categoryName(article.category_id)}</a></td>
+                        <td>${article.tags}</td>
+                        <td>
+                        	<button class="btn  btn-primary btn-xs">Update</button>
+                        	<a class="btn btn-danger btn-xs" onclick="confirmDelete(${article.id})">
+                        		Delete
+							</a>
+                        </td>
+                      </tr>
+					<%
+						}
+					%>
+                    </tbody>
+                    <tfoot>
+                      <tr>
+                        <th>#ID</th>
+                        <th>Title</th>
+                        <th>Post time</th>
+                        <th>Category</th>
+                        <th>Tags</th>
+                        <th>Managae</th>
+                      </tr>
+                    </tfoot>
+			  </table>
+			<%
+				var fullUrl = ctx+'/admin/articles?page={0}&keywords='+keywords!+'&categoryId='+categoryId!;
+				include("/WEB-INF/views/include_page.html",{pageUrl:fullUrl}){}
+			%>
+			</div>
+        </section><!-- /.content -->
+      </div><!-- /.content-wrapper -->
+      
+		<div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		    <div class="modal-dialog">
+		        <div class="modal-content">
+		            <div class="modal-header">
+		                Warn
+		            </div>
+		            <div class="modal-body">
+		                This Record can not recover after delete,Are you sure to delete this record?
+		            </div>
+		            <div class="modal-footer">
+		                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+		                <a id='confirm-delete-btn-ok' class="btn btn-danger btn-ok">Delete</a>
+		            </div>
+		        </div>
+		    </div>
+		</div>
+
+	  <%include("/WEB-INF/views/admin/include_footer.html"){}%>
+
+    </div><!-- ./wrapper -->
+	<%include("/WEB-INF/views/admin/include_js.html"){}%>
+	<script type="text/javascript">
+	
+	function confirmDelete(id)
+	{
+		$('#confirm-delete-btn-ok').attr('href','${ctx}/admin/deleteArticle?keywords=${keywords!}&categoryId=${categoryId!}&id='+id+"&page="+${page.pageNumber});
+		$('#confirm-delete').modal({});
+	}
+	</script>
+  </body>
+</html>

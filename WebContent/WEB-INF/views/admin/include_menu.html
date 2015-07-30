@@ -1,0 +1,45 @@
+ <!-- Main Header -->
+      <header class="main-header">
+
+        <!-- Logo -->
+        <a href="${ctx}/admin" class="logo">
+          <!-- mini logo for sidebar mini 50x50 pixels -->
+          <span class="logo-mini"><b>J</b>Note</span>
+          <!-- logo for regular state and mobile devices -->
+          <span class="logo-lg"><b>JNote</b> Admin</span>
+        </a>
+
+        <!-- Header Navbar -->
+        <nav class="navbar navbar-static-top" role="navigation">
+          <!-- Sidebar toggle button-->
+          <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+            <span class="sr-only">Toggle navigation</span>
+          </a>
+          <!-- Navbar Right Menu -->
+          <div class="navbar-custom-menu">
+            <ul class="nav navbar-nav">
+              <!-- User Account Menu -->
+              <li>
+                <!-- Menu Toggle Button -->
+                  <!-- hidden-xs hides the username on small devices so only the image appears. -->
+                  <a>Welcome ${session.user.username!}</a>
+              </li>
+                  <!-- Menu Footer-->
+                  <li>
+                      <a href="${ctx}/admin/logout">Sign out</a>
+                  </li>
+            </ul>
+          </div>
+        </nav>
+      </header>
+      <aside class="main-sidebar">
+
+        <section class="sidebar">
+          <ul class="sidebar-menu">
+            <li class="header">Menus</li>
+            <li class="active"><a href="${ctx}/admin/articles"><i class="fa fa-link"></i> <span>Articles</span></a></li>
+            <li><a href="#"><i class="fa fa-link"></i> <span>Comments</span></a></li>
+            <li><a href="#"><i class="fa fa-link"></i> <span>Settings</span></a></li>
+          </ul><!-- /.sidebar-menu -->
+        </section>
+      </aside>

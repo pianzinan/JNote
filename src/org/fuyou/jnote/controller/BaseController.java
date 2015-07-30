@@ -1,7 +1,9 @@
 package org.fuyou.jnote.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.fuyou.jnote.bean.Constants;
 import org.fuyou.jnote.model.Category;
@@ -23,6 +25,7 @@ public class BaseController extends Controller
 {
 	private static final Logger logger = Logger.getLogger(BaseController.class);
 	private static List<Category> categorys = new ArrayList<Category>();
+	protected static Map<Integer, String> categorysName = new HashMap<Integer, String>();
 	/**
 	 * 随机码生成字典
 	 */
@@ -60,6 +63,14 @@ public class BaseController extends Controller
 		}
 
 		categorys = Category.dao.find("select * from " + Category.TABLE_NAME);
+		
+		categorysName.clear();
+		
+		for(Category category:categorys)
+		{
+			categorysName.put(category.getInt(Category.COL_ID), category.getStr(Category.COL_NAME));
+		}
+		
 		return categorys;
 	}
 

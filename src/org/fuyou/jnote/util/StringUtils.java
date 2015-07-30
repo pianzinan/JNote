@@ -9,6 +9,12 @@ public class StringUtils
 {
 	private static final Logger logger = Logger.getLogger(ArticleController.class);
 	
+	
+	public static boolean isEmptyOrNull(String txt)
+	{
+		return txt == null || txt.trim().length()<=0;
+	}
+	
 	public static String unescapeHtml(String text)
 	{
 		if (text == null)

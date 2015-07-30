@@ -55,4 +55,11 @@ public class CategoryController extends BaseController
 	{
 		category();
 	}
+	
+
+
+	public static String categoryName(Integer id)
+	{
+		return categorysName.get(id);
+	}
 }
