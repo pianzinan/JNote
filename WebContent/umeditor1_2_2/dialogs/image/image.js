@@ -370,16 +370,16 @@
         tpl: "<link rel=\"stylesheet\" type=\"text/css\" href=\"<%=image_url%>image.css\">" +
             "<div class=\"edui-image-wrapper\">" +
             "<ul class=\"edui-tab-nav\">" +
-            "<li class=\"edui-tab-item edui-active\"><a data-context=\".edui-image-local\" class=\"edui-tab-text\"><%=lang_tab_local%></a></li>" +
-            "<li  class=\"edui-tab-item\"><a data-context=\".edui-image-JimgSearch\" class=\"edui-tab-text\"><%=lang_tab_imgSearch%></a></li>" +
+            "<li class=\"edui-tab-item\" style='display:none;'><a data-context=\".edui-image-local\" class=\"edui-tab-text\"><%=lang_tab_local%></a></li>" +
+            "<li  class=\"edui-tab-item edui-active\"><a data-context=\".edui-image-JimgSearch\" class=\"edui-tab-text\"><%=lang_tab_imgSearch%></a></li>" +
             "</ul>" +
             "<div class=\"edui-tab-content\">" +
-            "<div class=\"edui-image-local edui-tab-pane edui-active\">" +
+            "<div class=\"edui-image-local edui-tab-pane\">" +
             "<div class=\"edui-image-content\"></div>" +
             "<div class=\"edui-image-mask\"></div>" +
             "<div class=\"edui-image-dragTip\"><%=lang_input_dragTip%></div>" +
             "</div>" +
-            "<div class=\"edui-image-JimgSearch edui-tab-pane\">" +
+            "<div class=\"edui-image-JimgSearch edui-tab-pane  edui-active\">" +
             "<div class=\"edui-image-searchBar\">" +
             "<table><tr><td><input class=\"edui-image-searchTxt\" type=\"text\"></td>" +
             "<td><div class=\"edui-image-searchAdd\"><%=lang_btn_add%></div></td></tr></table>" +
