@@ -54,6 +54,17 @@ public class BaseController extends Controller
 		setAttr("categorys", getCategorys());
 		super.render("/WEB-INF/views" + view);
 	}
+	
+	protected void setError(String error)
+	{
+		setAttr("error", error);
+	}
+
+	
+	protected void setSuccess(String success)
+	{
+		setAttr("success", success);
+	}
 
 	public static List<Category> getCategorys()
 	{

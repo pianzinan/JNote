@@ -4,6 +4,7 @@
 	<%include("/WEB-INF/views/admin/include_head.html"){}%>
     <link href="${ctx}/umeditor1_2_2/themes/default/css/umeditor.css" type="text/css" rel="stylesheet">
     <link href="${ctx}/css/bootstrap-markdown.min.css" type="text/css" rel="stylesheet">
+    <link href="${ctx}/css/paraiso.light.css" type="text/css" rel="stylesheet">
 	</head>
 	
   	<body class="skin-blue sidebar-mini">
@@ -17,6 +18,12 @@
           <h1>
             New Artilce
             <small>Create article</small>
+		  <span id='result_label' class="form-group has-success">
+			  <label class="control-label">${success!}</label>
+		  </span>
+		  <span id='result_label' class="form-group has-error">
+			  <label class="control-label">${error!}</label>
+		  </span>
           </h1>
           <ol class="breadcrumb">
             <li><a href="#"><i class="fa fa-dashboard"></i> Article</a></li>
@@ -27,7 +34,6 @@
         <section class="content">
 			<div class="panel-body">
 	          <form class="form" method="get" action="${ctx}/admin/articles">
-					
 				<div class="form-group">
 	    			<label for="title">Title</label>
 					<input id="title" name="title" class="form-control" placeholder="Article title" >
@@ -40,9 +46,8 @@
 					</select>
 				</div>
 					
-					
 				<div id='markdownDiv' class="form-group">
-					<textarea id='markdownPanel' name="markdown" data-provide="markdown" rows="20" style="width: 100%;"></textarea>
+					<textarea id='markdownPanel' name="markdown" data-provide='markdown' data-iconlibrary="fa" rows="20" style="width: 100%;"></textarea>
 				</div>
 					
 				<div id='umeditorDiv' class="form-group">
@@ -53,6 +58,19 @@
 				<div class="form-group">
 	    			<label for="tags">Keywords</label>
 					<input id="tags" name="tags" class="form-control" placeholder="keyword1,keyword2,keyword3..." >
+				</div>
+				<div class="form-group">
+	    			<label for="categoryId">Category</label>
+					<select id='categoryId' name="categoryId">
+						<%
+							for(category in categorys)
+							{
+						%>
+						  <option value="${category.id}">${category.name}</option>
+						<%
+							}
+						%>
+					</select>
 				</div>
 					
 					
@@ -71,12 +89,20 @@
     <script type="text/javascript" charset="utf-8" src="${ctx}/js/marked.min.js"></script>
     <script type="text/javascript" charset="utf-8" src="${ctx}/js/markdown.js"></script>
     <script type="text/javascript" charset="utf-8" src="${ctx}/js/to-markdown.js"></script>
+    <script type="text/javascript" charset="utf-8" src="${ctx}/js/highlight.pack.js"></script>
     <script type="text/javascript" charset="utf-8" src="${ctx}/js/bootstrap-markdown.js"></script>
     <script type="text/javascript" charset="utf-8" src="${ctx}/umeditor1_2_2/umeditor.config.js"></script>
     <script type="text/javascript" charset="utf-8" src="${ctx}/umeditor1_2_2/umeditor.min.js"></script>
 	<script type="text/javascript">
 	
-	$(function(){
+	$(document).ready(function(){
+		
+
+
+		$("code").load(function(block) {
+			alert('code');
+		});
+		
 	    var um = UM.getEditor('html');
 		$("#markdownDiv").hide();
 	    
@@ -94,6 +120,19 @@
 				$("#markdownDiv").show();
 			}
 		});
+		
+		$(document).bind('DOMNodeInserted',function(e){
+			  var element = e.target;
+			  var cls = $(element).attr("class");
+			  if(cls == "md-preview")
+			  {
+				  $('code').each(function(i, block) {
+					    hljs.highlightBlock(block);
+					});
+				  console.log("DOMNodeInserted " + cls);
+			  }
+		});
+
 	});
 	
 	</script>

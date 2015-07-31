@@ -1,6 +1,7 @@
 package org.fuyou.jnote.controller;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.fuyou.jnote.bean.Constants;
@@ -26,13 +27,84 @@ public class AdminController extends BaseController
 			return;
 		}
 
-		String type = getPara("type", null);
+		String editor = getPara("editor", null);
 		
-		if(StringUtils.isEmptyOrNull(type))
+		if(StringUtils.isEmptyOrNull(editor))
 		{
 			render("/admin/article_new.html");
 			return;
 		}
+		
+		String title = getPara("title", null);
+		String markdown = getPara("markdown", null);
+		String html = getPara("html", null);
+		String tags = getPara("tags", "");
+		int categoryId = getParaToInt("categoryId", 0);
+
+		setAttr("title", title);
+		setAttr("markdown", markdown);
+		setAttr("html", html);
+		setAttr("editor", editor);
+		setAttr("tags", tags);
+		setAttr("categoryId", categoryId);
+		
+		
+		if(StringUtils.isEmptyOrNull(title))
+		{
+			setError("Please input title");
+			
+		}else if(title.length()>256)
+		{
+			setError("Title max length 256");
+			
+		}else if(categoryId<=0)
+		{
+			setError("No category");
+			
+		}else if(StringUtils.isEmptyOrNull(tags))
+		{
+			setError("Please input tags,split by ,");
+			
+		}else if(StringUtils.isEmptyOrNull(editor))
+		{
+			setError("Please select editor");
+			
+		}else if(editor.equalsIgnoreCase("UMeditor") && StringUtils.isEmptyOrNull(html))
+		{
+			setError("Please write something");
+			
+		}else if(editor.equalsIgnoreCase("Markdown") && StringUtils.isEmptyOrNull(markdown))
+		{
+			setError("Please write something");
+			
+		}else
+		{
+			if(editor.equalsIgnoreCase("Markdown"))
+			{
+				
+			}
+			
+			Article article = new Article();
+			article.set(Article.COL_CATEGORY_ID, categoryId);
+			article.set(Article.COL_HTML, html);
+			article.set(Article.COL_MARKDOWN, markdown);
+			article.set(Article.COL_NAME, title);
+			article.set(Article.COL_POST_TIME, new Date());
+			article.set(Article.COL_TAGS, tags);
+			
+			if(article.save())
+			{
+				setSuccess("Publish success");
+				
+			}else
+			{
+				setError("Publish error");
+				
+			}
+		}
+		
+
+		render("/admin/article_new.html");
 	}
 	
 	public void deleteArticle()
