@@ -19,35 +19,64 @@ public class AdminController extends BaseController
 	private static final Logger logger = Logger.getLogger(AdminController.class);
 	public static final String ROUTE = "/admin";
 	
-	public void createArticle()
+	public void postArticle()
 	{
 		if(!isLogin())
 		{
 			redirect("/admin/login");
 			return;
 		}
-
-		String editor = getPara("editor", null);
 		
-		if(StringUtils.isEmptyOrNull(editor))
-		{
-			render("/admin/article_new.html");
-			return;
-		}
 		
+		boolean draft = getParaToBoolean("draft", false);
+		Integer id = getParaToInt("id",null);
 		String title = getPara("title", null);
-		String markdown = getPara("markdown", null);
-		String html = getPara("html", null);
 		String tags = getPara("tags", "");
+		String captcha = getPara("captcha", "");
 		int categoryId = getParaToInt("categoryId", 0);
 
-		setAttr("title", title);
-		setAttr("markdown", markdown);
-		setAttr("html", html);
-		setAttr("editor", editor);
-		setAttr("tags", tags);
-		setAttr("categoryId", categoryId);
+		int editor = getParaToInt("editor", -1);
 		
+
+		String content = null;
+		if(editor == Article.CONTENT_TYPE_MARKDOWN)
+		{
+			content = getPara("markdown", null);
+			
+		}else if(editor == Article.CONTENT_TYPE_UMEDITOR)
+		{
+			content = getPara("umeditor", null);
+		}
+		
+
+
+		Article article = null;
+		
+		if(id != null)
+		{
+			article = Article.dao.findById(id);
+			
+		}else
+		{
+			article = new Article();
+		}
+		
+		article.set(Article.COL_CONTENT_TYPE, editor);
+		article.set(Article.COL_CONTENT, content);
+		article.set(Article.COL_CATEGORY_ID, categoryId);
+		article.set(Article.COL_TITLE, title);
+		article.set(Article.COL_POST_TIME, new Date());
+		article.set(Article.COL_TAGS, tags);
+		article.set(Article.COL_STATUS, Article.STATUS_PUBLISH);
+		
+		if(draft)
+		{
+			article.set(Article.COL_STATUS, Article.STATUS_DRAFT);
+		}
+		
+		setAttr("article", article);
+		
+		getPara("content", null);
 		
 		if(StringUtils.isEmptyOrNull(title))
 		{
@@ -65,45 +94,79 @@ public class AdminController extends BaseController
 		{
 			setError("Please input tags,split by ,");
 			
-		}else if(StringUtils.isEmptyOrNull(editor))
-		{
-			setError("Please select editor");
-			
-		}else if(editor.equalsIgnoreCase("UMeditor") && StringUtils.isEmptyOrNull(html))
+		}else if(StringUtils.isEmptyOrNull(content))
 		{
 			setError("Please write something");
 			
-		}else if(editor.equalsIgnoreCase("Markdown") && StringUtils.isEmptyOrNull(markdown))
+		}else if(editor!=Article.CONTENT_TYPE_MARKDOWN && editor!=Article.CONTENT_TYPE_UMEDITOR)
 		{
-			setError("Please write something");
+			setError("Please select a editor");
+			
+		}else if(!validateCaptcha(captcha))
+		{
+			setError("captcha error");
 			
 		}else
 		{
-			if(editor.equalsIgnoreCase("Markdown"))
-			{
-				
-			}
 			
-			Article article = new Article();
-			article.set(Article.COL_CATEGORY_ID, categoryId);
-			article.set(Article.COL_HTML, html);
-			article.set(Article.COL_MARKDOWN, markdown);
-			article.set(Article.COL_NAME, title);
-			article.set(Article.COL_POST_TIME, new Date());
-			article.set(Article.COL_TAGS, tags);
-			
-			if(article.save())
+			if(id == null)
 			{
-				setSuccess("Publish success");
+				if(article.save())
+				{//新建
+			        
+			        if(!draft)
+			        {//新建的话清除数据
+			        	removeAttr("article");
+				        setSuccess("Publish success");
+				        
+			        }else
+			        {
+				        setSuccess("Save draft success");
+			        }
+					
+				}else
+				{
+					setError("Save error");
+				}
 				
-			}else
+			}else if(id != null)
 			{
-				setError("Publish error");
-				
+				if(article.update())
+				{//更新
+			        
+			        if(!draft)
+			        {//新建的话清除数据
+			        	removeAttr("article");
+				        setSuccess("Update and publish success");
+				        
+			        }else
+			        {
+				        setSuccess("Save draft success");
+			        }
+					
+				}else
+				{
+					setError("Save error");
+				}
+		        
 			}
 		}
 		
-
+		render("/admin/article_new.html");
+	}
+	
+	public void updateArticle()
+	{
+		if(!isLogin())
+		{
+			redirect("/admin/login");
+			return;
+		}
+		
+		int id = getParaToInt("id", -1);
+		
+		Article article = Article.dao.findById(id);
+		setAttr("article", article);
 		render("/admin/article_new.html");
 	}
 	
@@ -166,8 +229,8 @@ public class AdminController extends BaseController
 		{
 
 			from.append(" and (");
-			from.append(Article.COL_NAME).append(" like ? or ");
-			from.append(Article.COL_HTML).append(" like ? ");
+			from.append(Article.COL_TITLE).append(" like ? or ");
+			from.append(Article.COL_CONTENT).append(" like ? ");
 			from.append(" ) ");
 			params.add("%"+keywords+"%");
 			params.add("%"+keywords+"%");

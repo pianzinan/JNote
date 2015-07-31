@@ -14,7 +14,7 @@
           <h1>
             Artilces
             <small>This is your article list</small>
-            <a class="btn btn-success btn-xs" href="${ctx}/admin/createArticle">New</a>
+            <a class="btn btn-success btn-xs" href="${ctx}/admin/postArticle">New</a>
           </h1>
           <ol class="breadcrumb">
             <li><a href="#"><i class="fa fa-dashboard"></i> Level</a></li>
@@ -68,7 +68,7 @@
                         <td><a href="${ctx}/category/${article.category_id}" target="_blank">${@org.fuyou.jnote.controller.CategoryController.categoryName(article.category_id)}</a></td>
                         <td>${article.tags}</td>
                         <td>
-                        	<button class="btn  btn-primary btn-xs">Update</button>
+                        	<a class="btn  btn-primary btn-xs" href="${ctx}/admin/updateArticle?id=${article.id}">Update</a>
                         	<a class="btn btn-danger btn-xs" onclick="confirmDelete(${article.id})">
                         		Delete
 							</a>

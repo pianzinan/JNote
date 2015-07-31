@@ -33,50 +33,66 @@
 
         <section class="content">
 			<div class="panel-body">
-	          <form class="form" method="get" action="${ctx}/admin/articles">
+	          <form id="article_form" class="form" method="post" action="${ctx}/admin/postArticle" >
+				<input type="hidden" id="draft" name="draft" value="false" />
+				<input type="hidden" id="id" name="id" value="${article.id!}"/>
 				<div class="form-group">
 	    			<label for="title">Title</label>
-					<input id="title" name="title" class="form-control" placeholder="Article title" >
+					<input id="title" name="title" class="form-control" placeholder="Article title" value="${article.title!}" >
 				</div>
 				<div class="form-group">
 	    			<label for="editor">Editor</label>
 					<select id='editor' name="editor">
-						<option value="UMeditor">UMeditor</option>
-						<option value="Markdown">Markdown</option>
+						<option value="1">Markdown</option>
+						<option value="2">UMeditor</option>
 					</select>
 				</div>
 					
 				<div id='markdownDiv' class="form-group">
-					<textarea id='markdownPanel' name="markdown" data-provide='markdown' data-iconlibrary="fa" rows="20" style="width: 100%;"></textarea>
+					<textarea id='markdownPanel' name="markdown" data-provide='markdown' data-iconlibrary="fa" rows="20" style="width: 100%;">${article.content!}</textarea>
 				</div>
 					
 				<div id='umeditorDiv' class="form-group">
 				<!--style给定宽度可以影响编辑器的最终宽度-->
-					<script type="text/plain" id="html" name="html" style="width:99%;height:520px;"></script>
+					<script type="text/plain" id="html" name="umeditor" style="width:99%;height:520px;">${article.content!}</script>
 				</div>
 					
 				<div class="form-group">
 	    			<label for="tags">Keywords</label>
-					<input id="tags" name="tags" class="form-control" placeholder="keyword1,keyword2,keyword3..." >
+					<input id="tags" name="tags" class="form-control" placeholder="keyword1,keyword2,keyword3..." value="${article.tags!}">
 				</div>
 				<div class="form-group">
 	    			<label for="categoryId">Category</label>
 					<select id='categoryId' name="categoryId">
 						<%
+							var cid = article.category_id;
+							print("cid = "+cid+" - "+article.category_id+" - "+has(article.category_id));
 							for(category in categorys)
 							{
+								var cls = "";
+								if(cid == category.id)
+								{
+									cls = "selected='selected'";
+								}
 						%>
-						  <option value="${category.id}">${category.name}</option>
+						  <option ${cls} value="${category.id}">${category.name}</option>
 						<%
 							}
 						%>
 					</select>
 				</div>
 					
+					  <div class="form-group">
+					    <label for="captcha">Captcha</label>
+					    <span>
+						    <input type="text" id="captcha" name="captcha" placeholder="">
+					    	<img alt="" src="${ctx}/captcha" onclick="this.src='${ctx}/captcha?'+Math.random()">
+					    </span>
+					  </div>
 					
 				<div class="form-group">
 					<button type="submit" class="btn btn-default">Publish</button>
-					<button type="button" class="btn btn-default">Save</button>
+					<button type="button" class="btn btn-default" onclick="saveDraft()">Save Draft</button>
 				</div>
 			  </form>
 			 </div>
@@ -95,30 +111,33 @@
     <script type="text/javascript" charset="utf-8" src="${ctx}/umeditor1_2_2/umeditor.min.js"></script>
 	<script type="text/javascript">
 	
+	function saveDraft() 
+	{
+		$("#draft").val("true");
+		$("#article_form").submit();
+	}
+	
+	function onEditorChange()
+	{
+		var val = $("#editor").val();
+		if(val == '2')
+		{
+			$("#umeditorDiv").show();
+			$("#markdownDiv").hide();
+			
+		    var um = UM.getEditor('html');
+			
+		}else if(val == '1')
+		{
+			$("#umeditorDiv").hide();
+			$("#markdownDiv").show();
+		}
+	}
+	
 	$(document).ready(function(){
-		
-
-
-		$("code").load(function(block) {
-			alert('code');
-		});
-		
-	    var um = UM.getEditor('html');
-		$("#markdownDiv").hide();
-	    
 	    
 		$("#editor").change(function(){
-			var val = $(this).val();
-			if(val == 'UMeditor')
-			{
-				$("#umeditorDiv").show();
-				$("#markdownDiv").hide();
-				
-			}else if(val == 'Markdown')
-			{
-				$("#umeditorDiv").hide();
-				$("#markdownDiv").show();
-			}
+			onEditorChange();
 		});
 		
 		$(document).bind('DOMNodeInserted',function(e){
@@ -132,6 +151,22 @@
 				  console.log("DOMNodeInserted " + cls);
 			  }
 		});
+		
+		var editor = "${article.content_type!}";
+		if(editor == "1")
+		{
+			$('#editor').val('1');
+			onEditorChange();
+			
+		}else if(editor == "2")
+		{
+			$('#editor').val('2');
+			onEditorChange();
+			
+		}else
+		{
+			onEditorChange();
+		}
 
 	});
 	

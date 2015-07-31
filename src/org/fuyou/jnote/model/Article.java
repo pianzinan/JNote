@@ -20,10 +20,17 @@ public class Article extends Model<Article>
 	public static final String TABLE_NAME = "t_article";
 	
 	public static final String COL_ID = "id";
-	public static final String COL_NAME = "title";
-	public static final String COL_MARKDOWN = "markdown";
-	public static final String COL_HTML = "html";
+	public static final String COL_TITLE = "title";
+	public static final String COL_CONTENT = "content";
 	public static final String COL_POST_TIME = "post_time";
 	public static final String COL_CATEGORY_ID = "category_id";
 	public static final String COL_TAGS = "tags";
+	public static final String COL_CONTENT_TYPE = "content_type";
+	public static final String COL_STATUS = "status";
+
+	public static final int CONTENT_TYPE_MARKDOWN = 1;
+	public static final int CONTENT_TYPE_UMEDITOR = 2;
+	
+	public static final int STATUS_DRAFT = 0;
+	public static final int STATUS_PUBLISH = 1;
 }

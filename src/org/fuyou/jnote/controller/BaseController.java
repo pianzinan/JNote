@@ -1,6 +1,7 @@
 package org.fuyou.jnote.controller;
 
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,12 +47,25 @@ public class BaseController extends Controller
 	{
 		return CaptchaRender.validate(this, code.toUpperCase(), randomKey);
 	}
+	
+	protected void fetchParams()
+	{
+		Enumeration<String> names = getParaNames();
+        Map<String, Object> params = new HashMap<String, Object>();
+        while(names.hasMoreElements())
+        {
+            String key = names.nextElement();
+            params.put(key,getPara(key));
+        }
+        setAttr("params", params);
+	}
 
 	@Override
 	public void render(String view)
 	{
 		setAttr("ctx", Constants.contextPath);
 		setAttr("categorys", getCategorys());
+		fetchParams();
 		super.render("/WEB-INF/views" + view);
 	}
 	
