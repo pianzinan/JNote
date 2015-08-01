@@ -19,9 +19,13 @@ public class AdminController extends BaseController
 	private static final Logger logger = Logger.getLogger(AdminController.class);
 	public static final String ROUTE = "/admin";
 	
+	private static final int MENU_ARTICLE = 1;
+	private static final int MENU_COMMENTS = 2;
+	private static final int MENU_SETTING = 3;
+	
 	public void postArticle()
 	{
-		if(!isLogin())
+		if(!isAdminLogin())
 		{
 			redirect("/admin/login");
 			return;
@@ -36,7 +40,6 @@ public class AdminController extends BaseController
 		int categoryId = getParaToInt("categoryId", 0);
 
 		int editor = getParaToInt("editor", -1);
-		
 
 		String content = null;
 		if(editor == Article.CONTENT_TYPE_MARKDOWN)
@@ -76,7 +79,12 @@ public class AdminController extends BaseController
 		
 		setAttr("article", article);
 		
-		getPara("content", null);
+
+		if(!isParaExists("editor"))
+		{
+			render("/admin/article_new.html");
+			return;
+		}
 		
 		if(StringUtils.isEmptyOrNull(title))
 		{
@@ -157,7 +165,7 @@ public class AdminController extends BaseController
 	
 	public void updateArticle()
 	{
-		if(!isLogin())
+		if(!isAdminLogin())
 		{
 			redirect("/admin/login");
 			return;
@@ -172,7 +180,7 @@ public class AdminController extends BaseController
 	
 	public void deleteArticle()
 	{
-		if(!isLogin())
+		if(!isAdminLogin())
 		{
 			redirect("/admin/login");
 			return;
@@ -195,11 +203,13 @@ public class AdminController extends BaseController
 	
 	public void articles()
 	{
-		if(!isLogin())
+		if(!isAdminLogin())
 		{
 			redirect("/admin/login");
 			return;
 		}
+		
+		setMenu(MENU_ARTICLE);
 		
 		int categoryId = getParaToInt("categoryId", 0);
 		String keywords = getPara("keywords", null);
@@ -237,7 +247,7 @@ public class AdminController extends BaseController
 		}
 		
 		from.append(" order by ");
-		from.append(Article.COL_POST_TIME).append(" desc ");
+		from.append(Article.COL_ID).append(" desc ");
 		
 		
 		Page<Article> page = Article.dao.paginate(pageNumber, pageSize,select.toString(), from.toString(),params.toArray());
@@ -246,10 +256,87 @@ public class AdminController extends BaseController
 		render("/admin/articles.html");
 	}
 	
+
+	
+	public void deleteComment()
+	{
+		if(!isAdminLogin())
+		{
+			redirect("/admin/login");
+			return;
+		}
+
+		int aid = getParaToInt("id", 0);
+		
+		boolean  ret = Comment.dao.deleteById(aid);
+		if(!ret)
+		{
+			setAttr("error", "delete faild");
+		}
+		
+		comments();
+	}
+	
+	public void comments()
+	{
+		if(!isAdminLogin())
+		{
+			redirect("/admin/login");
+			return;
+		}
+		setMenu(MENU_COMMENTS);
+		
+		Integer aid = getParaToInt("aid", null);
+		String keywords = getPara("keywords", null);
+		int pageNumber = getParaToInt("page", 1);
+		int pageSize = getParaToInt("pageSize", Constants.pageSize);
+
+		setAttr("aid", aid);
+		setAttr("keywords", keywords);
+		setAttr("pageNumber", pageNumber);
+		setAttr("pageSize", pageSize);
+		
+		List<Object> params = new ArrayList<Object>();
+		
+		StringBuffer select = new StringBuffer("select * ");
+		StringBuffer from = new StringBuffer("from ");
+		from.append(Comment.TABLE_NAME).append(" ");
+		from.append(" where ");
+		from.append(" 1=1 ");
+		
+		if(aid != null )
+		{
+			from.append(" and ").append(Comment.COL_ARTICLE_ID).append("=? ");
+			params.add(aid);
+		}
+		
+		if(!StringUtils.isEmptyOrNull(keywords))
+		{
+
+			from.append(" and (");
+			from.append(Comment.COL_CONTACT).append(" like ? or ");
+			from.append(Comment.COL_MESSAGE).append(" like ? or ");
+			from.append(Comment.COL_USERNAME).append(" like ? ");
+			from.append(" ) ");
+			params.add("%"+keywords+"%");
+			params.add("%"+keywords+"%");
+			params.add("%"+keywords+"%");
+		}
+		
+		from.append(" order by ");
+		from.append(Comment.COL_ID).append(" desc ");
+		
+		
+		Page<Comment> page = Comment.dao.paginate(pageNumber, pageSize,select.toString(), from.toString(),params.toArray());
+		
+		setAttr("page", page);
+		render("/admin/comments.html");
+	}
+	
 	
 	public void index()
 	{
-		if(!isLogin())
+		if(!isAdminLogin())
 		{
 			redirect("/admin/login");
 			return;
@@ -257,12 +344,6 @@ public class AdminController extends BaseController
 		
 		render("/admin/starter.html");
 	}
-
-	private boolean isLogin()
-	{
-		return true;// getSession().getAttribute("user") != null;
-	}
-	
 
 	public void logout()
 	{
@@ -317,5 +398,11 @@ public class AdminController extends BaseController
 		}
 		
 		render("/admin/login.html");
+	}
+	
+	
+	private void setMenu(int m)
+	{
+		setAttr("menuId", m);
 	}
 }

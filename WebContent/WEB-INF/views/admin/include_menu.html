@@ -37,9 +37,9 @@
         <section class="sidebar">
           <ul class="sidebar-menu">
             <li class="header">Menus</li>
-            <li class="active"><a href="${ctx}/admin/articles"><i class="fa fa-link"></i> <span>Articles</span></a></li>
-            <li><a href="#"><i class="fa fa-link"></i> <span>Comments</span></a></li>
-            <li><a href="#"><i class="fa fa-link"></i> <span>Settings</span></a></li>
+            <li <% if(menuId! == 1) print("class='active'"); %> ><a href="${ctx}/admin/articles"><i class="fa fa-link"></i> <span>Articles</span></a></li>
+            <li <% if(menuId! == 2) print("class='active'"); %> ><a href="${ctx}/admin/comments"><i class="fa fa-link" ></i> <span>Comments</span></a></li>
+            <li <% if(menuId! == 3) print("class='active'"); %> ><a href="#"><i class="fa fa-link"></i> <span>Settings</span></a></li>
           </ul><!-- /.sidebar-menu -->
         </section>
       </aside>

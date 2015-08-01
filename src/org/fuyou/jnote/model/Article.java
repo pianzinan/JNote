@@ -33,4 +33,21 @@ public class Article extends Model<Article>
 	
 	public static final int STATUS_DRAFT = 0;
 	public static final int STATUS_PUBLISH = 1;
+	
+	public static String status(int status)
+	{
+		switch (status)
+		{
+			case STATUS_DRAFT:
+			{
+				return "Draft";
+			}
+			case STATUS_PUBLISH:
+			{	
+				return "Publish";
+			}
+		}
+		
+		return "Unkown";
+	}
 }

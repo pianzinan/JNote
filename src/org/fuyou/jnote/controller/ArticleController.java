@@ -108,6 +108,13 @@ public class ArticleController extends BaseController
 			return;
 		}
 		
+		if(article.getInt(Article.COL_STATUS)!=Article.STATUS_PUBLISH && !isAdminLogin())
+		{//不是发布状态且又是非管理员
+			logger.info("article id "+id+" not found");
+			renderError(404);
+			return;
+		}
+		
 		List<Object> params = new ArrayList<Object>();
 		
 		StringBuffer select = new StringBuffer("select * ");

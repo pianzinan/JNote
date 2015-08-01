@@ -12,33 +12,25 @@
       <div class="content-wrapper">
         <section class="content-header">
           <h1>
-            Artilces
-            <small>This is your article list</small>
-            <a class="btn btn-success btn-xs" href="${ctx}/admin/postArticle">New</a>
+            Comments
+            <small>This is your comment list</small>
           </h1>
           <ol class="breadcrumb">
-            <li><a href="#"><i class="fa fa-dashboard"></i> Articles</a></li>
+            <li><a href="#"><i class="fa fa-dashboard"></i> Comments</a></li>
             <li class="active">Here</li>
           </ol>
         </section>
           
 			<div class="panel-body">
-	          <form class="form-inline" method="get" action="${ctx}/admin/articles">
+	          <form class="form-inline" method="get" action="${ctx}/admin/comments">
+				  <div class="form-group">
+				    <label for="aid">Article ID</label>
+				    <input type="text" class="form-control" name="aid" placeholder="Article ID" value="${aid!}">
+				  </div>
 				  <div class="form-group">
 				    <label for="keywords">Search</label>
 				    <input type="text" class="form-control" name="keywords" placeholder="Keywords" value="${keywords!}">
 				  </div>
-				  <select class="form-control" name="categoryId">
-					  <option value="0">All</option>
-						<%
-							for(category in categorys)
-							{
-						%>
-						  <option value="${category.id}">${category.name}</option>
-						<%
-							}
-						%>
-					</select>
 				  <button type="submit" class="btn btn-default">Search</button>
 			  </form>
 			 </div>
@@ -49,29 +41,28 @@
                     <thead>
                       <tr>
                         <th>#</th>
-                        <th>Title</th>
+                        <th>Name</th>
+                        <th>Contact</th>
+                        <th>Message</th>
                         <th>Post time</th>
-                        <th>Category</th>
-                        <th>Tags</th>
-                        <th>Status</th>
+                        <th>Article id</th>
                         <th>Managae</th>
                       </tr>
                     </thead>
                     <tbody>
 					<%
-						for(article in page.list)
+						for(comment in page.list)
 						{
 					%>
                       <tr>
-                        <td>${article.id}</td>
-                        <td><a href="${ctx}/article/${article.id}" target="_blank">${article.title}</a> </td>
-                        <td>${article.post_time}</td>
-                        <td><a href="${ctx}/category/${article.category_id}" target="_blank">${@org.fuyou.jnote.controller.CategoryController.categoryName(article.category_id)}</a></td>
-                        <td>${article.tags}</td>
-                        <td>${@org.fuyou.jnote.model.Article.status(article.status)}</td>
+                        <td>${comment.id!}</td>
+                        <td>${comment.username!}</td>
+                        <td>${comment.contact!}</td>
+                        <td>${comment.message!}</td>
+                        <td>${comment.post_time!}</td>
+                        <td><a href="${ctx}/article/${comment.article_id}" target="_blank">${comment.article_id}</a> </td>
                         <td>
-                        	<a class="btn  btn-primary btn-xs" href="${ctx}/admin/updateArticle?id=${article.id}">Update</a>
-                        	<a class="btn btn-danger btn-xs" onclick="confirmDelete(${article.id})">
+                        	<a class="btn btn-danger btn-xs" onclick="confirmDelete(${comment.id})">
                         		Delete
 							</a>
                         </td>
@@ -83,17 +74,17 @@
                     <tfoot>
                       <tr>
                         <th>#</th>
-                        <th>Title</th>
+                        <th>Name</th>
+                        <th>Contact</th>
+                        <th>Message</th>
                         <th>Post time</th>
-                        <th>Category</th>
-                        <th>Tags</th>
-                        <th>Status</th>
+                        <th>Article id</th>
                         <th>Managae</th>
                       </tr>
                     </tfoot>
 			  </table>
 			<%
-				var fullUrl = ctx+'/admin/articles?page={0}&keywords='+keywords!+'&categoryId='+categoryId!;
+				var fullUrl = ctx+'/admin/comments?page={0}&keywords='+keywords!+'&aid='+aid!;
 				include("/WEB-INF/views/include_page.html",{pageUrl:fullUrl}){}
 			%>
 			</div>
@@ -125,7 +116,7 @@
 	
 	function confirmDelete(id)
 	{
-		$('#confirm-delete-btn-ok').attr('href','${ctx}/admin/deleteArticle?keywords=${keywords!}&categoryId=${categoryId!}&id='+id+"&page="+${page.pageNumber});
+		$('#confirm-delete-btn-ok').attr('href','${ctx}/admin/deleteComment?keywords=${keywords!}&aid=${aid!}&id='+id+"&page="+${page.pageNumber});
 		$('#confirm-delete').modal({});
 	}
 	</script>

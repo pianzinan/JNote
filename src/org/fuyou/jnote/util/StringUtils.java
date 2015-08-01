@@ -2,6 +2,7 @@ package org.fuyou.jnote.util;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.fuyou.jnote.controller.ArticleController;
+import org.pegdown.PegDownProcessor;
 
 import com.jfinal.log.Logger;
 
@@ -9,6 +10,15 @@ public class StringUtils
 {
 	private static final Logger logger = Logger.getLogger(ArticleController.class);
 	
+	public static String markdown2HTML(String markdown)
+	{
+		if(isEmptyOrNull(markdown))
+		{
+			return "";
+		}
+		
+		return new PegDownProcessor().markdownToHtml(markdown);
+	}
 	
 	public static boolean isEmptyOrNull(String txt)
 	{

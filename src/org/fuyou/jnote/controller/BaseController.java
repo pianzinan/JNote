@@ -99,4 +99,10 @@ public class BaseController extends Controller
 		return categorys;
 	}
 
+
+	protected boolean isAdminLogin()
+	{
+		return true;// getSession().getAttribute("user") != null;
+	}
+	
 }

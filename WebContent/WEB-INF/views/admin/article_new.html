@@ -26,8 +26,7 @@
 		  </span>
           </h1>
           <ol class="breadcrumb">
-            <li><a href="#"><i class="fa fa-dashboard"></i> Article</a></li>
-            <li class="active">New</li>
+            <li><i class="fa fa-dashboard"></i> Article</li>
           </ol>
         </section>
 
@@ -148,7 +147,6 @@
 				  $('code').each(function(i, block) {
 					    hljs.highlightBlock(block);
 					});
-				  console.log("DOMNodeInserted " + cls);
 			  }
 		});
 		
@@ -168,6 +166,13 @@
 			onEditorChange();
 		}
 
+		<%
+			if(has(article.id))
+			{
+		%>
+		$("#editor").attr("disabled","disabled");
+		<%}%>
+		
 	});
 	
 	</script>

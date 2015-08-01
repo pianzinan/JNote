@@ -18,8 +18,19 @@
 							    <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> ${escapeHtml(article.title)}
 					  	</h3>
 					  	<h6>${article.post_time}</h6>
-					  	<p>
-					  		${article.content}
+					  	<p id='content'>
+					  		<%
+					  			if(article.content_type == 1)
+					  			{//markdown
+					  				
+					  				print(@org.fuyou.jnote.util.StringUtils.markdown2HTML(article.content));
+					  				
+					  			}else
+					  			{
+					  				print(article.content);
+					  			}
+					  		
+					  		%>
 					  	</p>
 					  </div>
 					</div>

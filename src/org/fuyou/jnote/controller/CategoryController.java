@@ -41,6 +41,10 @@ public class CategoryController extends BaseController
 			params.add(cid);
 		}
 
+		
+		from.append(" and ").append(Article.COL_STATUS).append("=? ");
+		params.add(Article.STATUS_PUBLISH);
+		
 		from.append(" order by ");
 		from.append(Article.COL_POST_TIME).append(" desc ");
 		
