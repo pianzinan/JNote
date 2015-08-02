@@ -26,7 +26,6 @@ public class AdminController extends BaseController
 	private static final int MENU_SETTING = 3;
 	private static final int MENU_CATEGORYS = 4;
 	
-	
 	public void settings()
 	{
 		setMenu(MENU_SETTING);

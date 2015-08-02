@@ -71,6 +71,7 @@ public class AppConfig extends JFinalConfig
 		// 配置ActiveRecord插件
 		ActiveRecordPlugin arp = new ActiveRecordPlugin(c3p0Plugin);
 		arp.setShowSql(getPropertyToBoolean("showSql"));
+		
 		arp.addMapping(Category.TABLE_NAME, Category.class);
 		arp.addMapping(Article.TABLE_NAME, Article.class);
 		arp.addMapping(Comment.TABLE_NAME, Comment.class);

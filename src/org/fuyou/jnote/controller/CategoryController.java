@@ -5,6 +5,9 @@ import java.util.List;
 
 import org.fuyou.jnote.bean.Constants;
 import org.fuyou.jnote.model.Article;
+import org.fuyou.jnote.model.Config;
+import org.fuyou.jnote.util.FileUtils;
+import org.fuyou.jnote.util.StringUtils;
 
 import com.jfinal.plugin.activerecord.Page;
 
@@ -63,11 +66,15 @@ public class CategoryController extends BaseController
 	{
 		category();
 	}
-	
 
 
 	public static String categoryName(Integer id)
 	{
 		return categorysName.get(id);
+	}
+	
+	public static void main(String[] args)
+	{
+		System.out.println( FileUtils.loadString(Class.class.getResourceAsStream("/jnote.sql"), "UTF-8"));
 	}
 }

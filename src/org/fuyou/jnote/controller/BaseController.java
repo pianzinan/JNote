@@ -6,11 +6,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.fuyou.jnote.bean.Constants;
+import org.fuyou.jnote.inteceptor.SetupInterceptor;
 import org.fuyou.jnote.model.Category;
 import org.fuyou.jnote.model.Config;
 import org.fuyou.jnote.util.StringUtils;
 
+import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
 import com.jfinal.ext.render.CaptchaRender;
 import com.jfinal.log.Logger;
@@ -24,6 +25,7 @@ import com.jfinal.log.Logger;
  * @date 2015年7月29日 下午12:39:15
  * @version V1.0
  */
+@Before(SetupInterceptor.class)
 public class BaseController extends Controller
 {
 	private static final Logger logger = Logger.getLogger(BaseController.class);
@@ -137,12 +139,13 @@ public class BaseController extends Controller
 	protected void refreshSettings()
 	{
 		settings.clear();
-
-		settings.put("note_name", Config.loadValue("note_name"));
-		settings.put("domain", Config.loadValue("domain"));
-		settings.put("meta_keywords", Config.loadValue("meta_keywords"));
-		settings.put("meta_description", Config.loadValue("meta_description"));
-		settings.put("html_head", Config.loadValue("html_head"));
+		
+		List<Config> configs = Config.dao.find("select * from "+Config.TABLE_NAME);
+		
+		for(Config cfg:configs)
+		{
+			settings.put(cfg.getStr(Config.COL_KEY), cfg.getStr(Config.COL_VALUE));
+		}
 	}
 	
 	public void setHtmlTitle(String html_title)
@@ -170,5 +173,45 @@ public class BaseController extends Controller
 		}
 		setAttr("html_description", html_description);
 	}
+
+	public boolean isSetup()
+	{
+		if(settings.size()<=0)
+		{
+			refreshSettings();
+		}
+		
+		return settings.containsKey("password");
+	}
 	
+	public void setup()
+	{
+		String password = getPara("password");
+		String password2 = getPara("password2");
+	
+		
+		if(StringUtils.isEmptyOrNull(password) && StringUtils.isEmptyOrNull(password2))
+		{
+			render("/admin/setup.html");
+		}
+		
+		
+		if(StringUtils.isEmptyOrNull(password))
+		{
+			setError("Please input password");
+			
+		}else if(!password.equals(password2))
+		{
+			setError("Two times the password is not consistent");
+			
+		}else
+		{
+			Config.saveValue("password", password);
+			refreshSettings();
+			redirect("/");
+			return;
+		}
+		
+		render("/admin/setup.html");
+	}
 }

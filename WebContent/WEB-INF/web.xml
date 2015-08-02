@@ -3,14 +3,9 @@
 	xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 	id="WebApp_ID" version="2.5">
-	<web:servlet>
-		<web:servlet-name>AuthCode</web:servlet-name>
-		<web:servlet-class>org.fuyou.jnote.servlet.SafeCodeImageServlet</web:servlet-class>
-	</web:servlet>
-	<web:servlet-mapping>
-		<web:servlet-name>AuthCode</web:servlet-name>
-		<web:url-pattern>/authCode</web:url-pattern>
-	</web:servlet-mapping>
+	<listener>
+		<listener-class>org.fuyou.jnote.listener.InitListener</listener-class>
+	</listener>
 	<filter>
 		<filter-name>jfinal</filter-name>
 		<filter-class>com.jfinal.core.JFinalFilter</filter-class>
