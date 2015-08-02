@@ -7,7 +7,9 @@ import java.util.List;
 import org.fuyou.jnote.bean.Constants;
 import org.fuyou.jnote.bean.User;
 import org.fuyou.jnote.model.Article;
+import org.fuyou.jnote.model.Category;
 import org.fuyou.jnote.model.Comment;
+import org.fuyou.jnote.model.Config;
 import org.fuyou.jnote.util.StringUtils;
 
 import com.jfinal.log.Logger;
@@ -22,6 +24,82 @@ public class AdminController extends BaseController
 	private static final int MENU_ARTICLE = 1;
 	private static final int MENU_COMMENTS = 2;
 	private static final int MENU_SETTING = 3;
+	private static final int MENU_CATEGORYS = 4;
+	
+	
+	public void settings()
+	{
+		setMenu(MENU_SETTING);
+		
+		if(isParaExists("key"))
+		{
+			
+			String key = getPara("key");
+			if("password".equalsIgnoreCase(key))
+			{
+				updatePasswod();
+				
+				
+			}else if("settings".equalsIgnoreCase(key))
+			{
+				updateSettings();
+			}
+			
+			setAttr("key", key);
+		}
+		
+		refreshSettings();
+		render("/admin/settings.html");
+	}
+	
+	
+	private void updateSettings()
+	{
+		Config.saveValue("note_name", getPara("note_name"));
+		Config.saveValue("meta_keywords", getPara("meta_keywords"));
+		Config.saveValue("meta_description", getPara("meta_description"));
+		Config.saveValue("html_head", getPara("html_head"));
+		Config.saveValue("domain", getPara("domain"));
+		setSuccess("Update success");
+	}
+	
+	private void updatePasswod()
+	{
+		String oldPassword = getPara("oldPassword");
+		String password = getPara("password");
+		String password2 = getPara("password2");
+		
+		if(StringUtils.isEmptyOrNull(oldPassword))
+		{
+			setError("Please input old password");
+			
+		}else if(StringUtils.isEmptyOrNull(password))
+		{
+			setError("Please input new password");
+			
+		}else if(StringUtils.isEmptyOrNull(password2))
+		{
+			setError("Please input new password again");
+			
+		}else if(!password2.equals(password))
+		{
+			setError("Two times the new password is not consistent");
+			
+		}else
+		{
+			String oldP = Config.loadValue("password");
+			if(oldPassword.equals(oldP))
+			{
+				Config.saveValue("password", oldP);
+				setSuccess("Change password success");
+				
+			}else
+			{
+				setError("Old password error");
+			}
+		}
+		
+	}
 	
 	public void postArticle()
 	{
@@ -177,6 +255,97 @@ public class AdminController extends BaseController
 		setAttr("article", article);
 		render("/admin/article_new.html");
 	}
+
+	
+	public void updateCategory()
+	{
+		if(!isAdminLogin())
+		{
+			redirect("/admin/login");
+			return;
+		}
+		
+		int id = getParaToInt("id", -1);
+		
+		Category category = Category.dao.findById(id);
+		setAttr("category", category);
+		render("/admin/category_new.html");
+	}
+	
+
+	
+	public void postCategory()
+	{
+		if(!isAdminLogin())
+		{
+			redirect("/admin/login");
+			return;
+		}
+		
+		
+		Integer id = getParaToInt("id",null);
+		String name = getPara("name", null);
+		String captcha = getPara("captcha", null);
+
+		Category category = null;
+		
+		if(id != null)
+		{
+			category = Category.dao.findById(id);
+			
+		}else
+		{
+			category = new Category();
+		}
+		
+		setAttr("category", category);
+		
+		if(!isParaExists("id") || !isParaExists("name") || !isParaExists("captcha"))
+		{
+			render("/admin/category_new.html");
+			return;
+		}
+
+		if(StringUtils.isEmptyOrNull(name))
+		{
+			setError("Please input name");
+			
+		}else if(!validateCaptcha(captcha))
+		{
+			setError("captcha error");
+			
+		}else
+		{
+			category.set(Category.COL_NAME, name);
+			
+			if(id == null)
+			{
+				if(category.save())
+				{//新建
+					categorys();
+					return;
+					
+				}else
+				{
+					setError("Save error");
+				}
+				
+			}else if(id != null)
+			{
+				if(category.update())
+				{//更新
+					categorys();
+					return;
+					
+				}else
+				{
+					setError("Save error");
+				}
+			}
+		}
+		
+		render("/admin/category_new.html");
+	}
 	
 	public void deleteArticle()
 	{
@@ -199,6 +368,21 @@ public class AdminController extends BaseController
 		}
 		
 		articles();
+	}
+	
+	
+	
+	
+	public void categorys()
+	{
+		if(!isAdminLogin())
+		{
+			redirect("/admin/login");
+			return;
+		}
+		setMenu(MENU_CATEGORYS);
+		getCategorys(true);
+		render("/admin/categorys.html");
 	}
 	
 	public void articles()
@@ -255,7 +439,7 @@ public class AdminController extends BaseController
 		setAttr("page", page);
 		render("/admin/articles.html");
 	}
-	
+
 
 	
 	public void deleteComment()
@@ -275,6 +459,28 @@ public class AdminController extends BaseController
 		}
 		
 		comments();
+	}
+
+	/**
+	 * 删除分类
+	 */
+	public void deleteCategory()
+	{
+		if(!isAdminLogin())
+		{
+			redirect("/admin/login");
+			return;
+		}
+
+		int aid = getParaToInt("id", 0);
+		
+		boolean  ret = Category.dao.deleteById(aid);
+		if(!ret)
+		{
+			setAttr("error", "delete faild");
+		}
+		
+		categorys();
 	}
 	
 	public void comments()
@@ -298,9 +504,13 @@ public class AdminController extends BaseController
 		
 		List<Object> params = new ArrayList<Object>();
 		
-		StringBuffer select = new StringBuffer("select * ");
+		StringBuffer select = new StringBuffer("select "+Comment.TABLE_NAME+".*,");
+		select.append(Article.TABLE_NAME).append(".").append(Article.COL_TITLE).append(" ");
 		StringBuffer from = new StringBuffer("from ");
-		from.append(Comment.TABLE_NAME).append(" ");
+		from.append(Comment.TABLE_NAME).append(" INNER JOIN ");
+		from.append(Article.TABLE_NAME).append(" on ");
+		from.append(Article.TABLE_NAME).append(".").append(Article.COL_ID).append(" = ");
+		from.append(Comment.TABLE_NAME).append(".").append(Comment.COL_ARTICLE_ID).append(" ");
 		from.append(" where ");
 		from.append(" 1=1 ");
 		
@@ -353,19 +563,12 @@ public class AdminController extends BaseController
 	
 	public void login()
 	{
-		String username = getPara("username", "");
 		String password = getPara("password", "");
 		String captcha = getPara("captcha", "");
 
-		setAttr("username", username);
 		
-		
-		if(StringUtils.isEmptyOrNull(username) && StringUtils.isEmptyOrNull(password))
+		if(StringUtils.isEmptyOrNull(password))
 		{
-			
-		}else if(StringUtils.isEmptyOrNull(username))
-		{
-			setAttr("error", "Please input username");
 			
 		}else if(StringUtils.isEmptyOrNull(password))
 		{
@@ -381,10 +584,9 @@ public class AdminController extends BaseController
 			
 		}else
 		{
-			if(username.equals(Constants.username) && password.equals(Constants.password))
+			if(password.equals(Config.loadValue("password")))
 			{
 				User user = new User();
-				user.setUsername(username);
 				user.setPassword(password);
 				getSession().setAttribute("user", user);
 				redirect("/admin");

@@ -7,6 +7,7 @@ import org.fuyou.jnote.controller.CategoryController;
 import org.fuyou.jnote.model.Article;
 import org.fuyou.jnote.model.Category;
 import org.fuyou.jnote.model.Comment;
+import org.fuyou.jnote.model.Config;
 
 import com.jfinal.config.Constants;
 import com.jfinal.config.Handlers;
@@ -41,9 +42,6 @@ public class AppConfig extends JFinalConfig
 		org.fuyou.jnote.bean.Constants.db_user = getProperty("db_user");
 		org.fuyou.jnote.bean.Constants.db_pwd = getProperty("db_pwd");
 		org.fuyou.jnote.bean.Constants.charset = getProperty("charset");
-		org.fuyou.jnote.bean.Constants.username = getProperty("username");
-		org.fuyou.jnote.bean.Constants.password = getProperty("password");
-		org.fuyou.jnote.bean.Constants.contextPath = getProperty("contextPath");
 		org.fuyou.jnote.bean.Constants.pageSize = getPropertyToInt("pageSize",20);
 		
 		logger.info("db_url = "+org.fuyou.jnote.bean.Constants.db_url);
@@ -51,7 +49,6 @@ public class AppConfig extends JFinalConfig
 		logger.info("db_pwd = "+org.fuyou.jnote.bean.Constants.db_pwd);
 		logger.info("charset = "+org.fuyou.jnote.bean.Constants.charset);
 		logger.info("pageSize = "+org.fuyou.jnote.bean.Constants.pageSize);
-		logger.info("contextPath = "+org.fuyou.jnote.bean.Constants.contextPath);
 
 	}
 
@@ -77,6 +74,7 @@ public class AppConfig extends JFinalConfig
 		arp.addMapping(Category.TABLE_NAME, Category.class);
 		arp.addMapping(Article.TABLE_NAME, Article.class);
 		arp.addMapping(Comment.TABLE_NAME, Comment.class);
+		arp.addMapping(Config.TABLE_NAME,"key", Config.class);
 		me.add(arp);
 	}
 

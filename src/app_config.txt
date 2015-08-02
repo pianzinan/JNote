@@ -2,15 +2,9 @@ db_url = jdbc:mysql://127.0.0.1/jnote?characterEncoding=utf8&zeroDateTimeBehavio
 db_user = root
 db_pwd =
 
-contextPath=/JNote
-
 pageSize = 20
 
 charset=UTF-8
 
 devMode = true
 showSql = true
-
-#This is your username and password
-username = JNote
-password = 123456

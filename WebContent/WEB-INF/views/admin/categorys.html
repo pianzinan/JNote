@@ -12,29 +12,22 @@
       <div class="content-wrapper">
         <section class="content-header">
           <h1>
-            Comments
-            <small>This is your comment list</small>
+            Categorys
+            <small>This is your categorys list</small>
+            <a class="btn btn-success btn-xs" href="${ctx}/admin/postCategory">New</a>
+			  <span id='result_label' class="form-group has-success">
+				  <label class="control-label">${success!}</label>
+			  </span>
+			  <span id='result_label' class="form-group has-error">
+				  <label class="control-label">${error!}</label>
+		  </span>
           </h1>
           <ol class="breadcrumb">
-            <li><a href="#"><i class="fa fa-dashboard"></i> Comments</a></li>
+            <li><a href="#"><i class="fa fa-dashboard"></i> Categorys</a></li>
             <li class="active">Here</li>
           </ol>
         </section>
           
-			<div class="panel-body">
-	          <form class="form-inline" method="get" action="${ctx}/admin/comments">
-				  <div class="form-group">
-				    <label for="aid">Article ID</label>
-				    <input type="text" class="form-control" name="aid" placeholder="Article ID" value="${aid!}">
-				  </div>
-				  <div class="form-group">
-				    <label for="keywords">Search</label>
-				    <input type="text" class="form-control" name="keywords" placeholder="Keywords" value="${keywords!}">
-				  </div>
-				  <button type="submit" class="btn btn-default">Search</button>
-			  </form>
-			 </div>
-
         <section class="content">
 	        <div class="table-responsive">
 			  <table class="table">
@@ -42,27 +35,20 @@
                       <tr>
                         <th>#</th>
                         <th>Name</th>
-                        <th>Contact</th>
-                        <th>Message</th>
-                        <th>Post time</th>
-                        <th>Article id</th>
                         <th>Managae</th>
                       </tr>
                     </thead>
                     <tbody>
 					<%
-						for(comment in page.list)
+						for(category in categorys)
 						{
 					%>
                       <tr>
-                        <td>${comment.id!}</td>
-                        <td>${comment.username!}</td>
-                        <td>${comment.contact!}</td>
-                        <td>${comment.message!}</td>
-                        <td>${comment.post_time!}</td>
-                        <td><a href="${ctx}/article/${comment.article_id}" target="_blank">${comment.title}</a> </td>
+                        <td>${category.id}</td>
+                        <td><a href="${ctx}/category/${category.id}" target="_blank">${category.name}</a> </td>
                         <td>
-                        	<a class="btn btn-danger btn-xs" onclick="confirmDelete(${comment.id})">
+                        	<a class="btn  btn-primary btn-xs" href="${ctx}/admin/updateCategory?id=${category.id}">Update</a>
+                        	<a class="btn btn-danger btn-xs" onclick="confirmDelete(${category.id})">
                         		Delete
 							</a>
                         </td>
@@ -75,18 +61,10 @@
                       <tr>
                         <th>#</th>
                         <th>Name</th>
-                        <th>Contact</th>
-                        <th>Message</th>
-                        <th>Post time</th>
-                        <th>Article id</th>
                         <th>Managae</th>
                       </tr>
                     </tfoot>
 			  </table>
-			<%
-				var fullUrl = ctx+'/admin/comments?page={0}&keywords='+keywords!+'&aid='+aid!;
-				include("/WEB-INF/views/include_page.html",{pageUrl:fullUrl}){}
-			%>
 			</div>
         </section><!-- /.content -->
       </div><!-- /.content-wrapper -->
@@ -98,7 +76,7 @@
 		                Warn
 		            </div>
 		            <div class="modal-body">
-		                This Record can not recover after delete,Are you sure to delete this record?
+		                Do you want to delete this category,inlcude articles and comments in this category?
 		            </div>
 		            <div class="modal-footer">
 		                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
@@ -116,7 +94,7 @@
 	
 	function confirmDelete(id)
 	{
-		$('#confirm-delete-btn-ok').attr('href','${ctx}/admin/deleteComment?keywords=${keywords!}&aid=${aid!}&id='+id+"&page="+${page.pageNumber});
+		$('#confirm-delete-btn-ok').attr('href','${ctx}/admin/deleteCategory?id='+id);
 		$('#confirm-delete').modal({});
 	}
 	</script>

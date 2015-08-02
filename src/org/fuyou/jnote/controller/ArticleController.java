@@ -135,6 +135,9 @@ public class ArticleController extends BaseController
 		
 		setAttr("articleId", id);
 		setAttr("article", article);
+		setHtmlTitle(article.getStr(Article.COL_TITLE));
+		setHtmlKeywords(article.getStr(Article.COL_TAGS));
+		setHtmlDescription(article.getStr(Article.COL_CONTENT));
 		render("/article.html");
 	}
 	

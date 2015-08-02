@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	<%include("/WEB-INF/views/admin/include_head.html"){}%>
+	</head>
+  <body class="skin-blue sidebar-mini">
+    <div class="wrapper">
+
+	<%include("/WEB-INF/views/admin/include_menu.html"){}%>
+     
+
+      <div class="content-wrapper">
+        <section class="content-header">
+          <h1>
+            Settings
+            <small>This is your setting</small>
+            
+			  <span id='result_label' class="form-group has-success">
+				  <label class="control-label">${success!}</label>
+			  </span>
+			  <span id='result_label' class="form-group has-error">
+				  <label class="control-label">${error!}</label>
+			  </span>
+          </h1>
+          <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Settings</a></li>
+            <li class="active">Here</li>
+          </ol>
+        </section>
+          
+        <section class="content">
+        
+        	<div class="nav-tabs-custom">
+                <ul class="nav nav-tabs">
+                  <li <% if( !has(key) || key == "settings") print("class='active'"); %>><a href="#tab_1" data-toggle="tab" aria-expanded="true">Settings</a></li>
+                  <li <% if(key! == "password") print("class='active'"); %> ><a href="#tab_2" data-toggle="tab" aria-expanded="false">Password</a></li>
+                  <li class=""><a href="#tab_3" data-toggle="tab" aria-expanded="false">Categorys</a></li>
+                </ul>
+                <div class="tab-content">
+                  <div class="tab-pane  <% if( !has(key) || key == "settings") print("active"); %>" id="tab_1">
+			         <!-- form start -->
+			         <form role="form" method="post" action="${ctx}/admin/settings">
+			                  <input type="hidden" class="form-control" id="key" name="key" value="settings">
+			                  <div class="box-body">
+			                    <div class="form-group">
+			                      <label for="note_name">Note name</label>
+			                      <input type="text" class="form-control" id="note_name" name="note_name" placeholder="Note name" value="${settings.note_name!}">
+			                    </div>
+			                    <div class="form-group">
+			                      <label for="domain">Domain</label>
+			                      <input type="text" class="form-control" id="domain" name="domain" placeholder="Domain" value="${settings.domain!}">
+			                    </div>
+			                    <div class="form-group">
+			                      <label for="meta_keywords">Meta Keywords</label>
+			                      <input type="text" class="form-control" id="meta_keywords" name="meta_keywords" placeholder="Meta Keywords" value="${settings.meta_keywords!}">
+			                    </div>
+			                    <div class="form-group">
+			                      <label for="meta_description">Meta Description</label>
+			                      <input type="text" class="form-control" id="meta_description" name="meta_description" placeholder="Meta Description" value="${settings.meta_description!}">
+			                    </div>
+			                    <div class="form-group">
+			                      <label for="heads">HTML Head</label>
+			                      <textarea class="form-control" rows="5" id="html_head" name="html_head" placeholder="Enter HTML head">${settings.html_head!}</textarea>
+			                    </div>
+			                  </div><!-- /.box-body -->
+			
+			                  <div class="box-footer">
+			                    <button type="submit" class="btn btn-primary">update</button>
+			                  </div>
+			           </form>
+                  </div><!-- /.tab-pane -->
+                  <div class="tab-pane <% if(key! == "password") print("active"); %>" id="tab_2">
+			         <!-- form start -->
+			         <form role="form" method="post" action="${ctx}/admin/settings">
+			                  <input type="hidden" class="form-control" id="key" name="key" value="password">
+			                  <div class="box-body">
+			                    <div class="form-group">
+			                      <label for="oldPassword">Old password</label>
+			                      <input type="password" class="form-control" id="oldPassword" name="oldPassword" placeholder="Enter old password">
+			                    </div>
+			                    <div class="form-group">
+			                      <label for="exampleInputPassword1">New password</label>
+			                      <input type="password" class="form-control" id="password" name="password" placeholder="New password">
+			                    </div>
+			                    <div class="form-group">
+			                      <label for="exampleInputPassword1">New password again</label>
+			                      <input type="password" class="form-control" id="password2" name="password2" placeholder="New password again">
+			                    </div>
+			                  </div><!-- /.box-body -->
+			
+			                  <div class="box-footer">
+			                    <button type="submit" class="btn btn-primary">update</button>
+			                  </div>
+			           </form>
+                  </div><!-- /.tab-pane -->
+                  <div class="tab-pane" id="tab_3">
+                  </div><!-- /.tab-pane -->
+                </div><!-- /.tab-content -->
+              </div>
+        
+        </section><!-- /.content -->
+      </div><!-- /.content-wrapper -->
+      
+
+	  <%include("/WEB-INF/views/admin/include_footer.html"){}%>
+
+    </div><!-- ./wrapper -->
+	<%include("/WEB-INF/views/admin/include_js.html"){}%>
+	<script type="text/javascript">
+	
+	function confirmDelete(id)
+	{
+	}
+	</script>
+  </body>
+</html>

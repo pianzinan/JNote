@@ -52,6 +52,10 @@ public class CategoryController extends BaseController
 		Page<Article> pages = Article.dao.paginate(page, Constants.pageSize,select.toString(), from.toString(),params.toArray());
 		setAttr("page", pages);
 		setAttr("categoryId", cid);
+		if(cid>0)
+		{
+			setHtmlTitle(categoryName(cid));
+		}
 		render("/index.html");
 	}
 	

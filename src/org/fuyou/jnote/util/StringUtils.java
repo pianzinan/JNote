@@ -32,9 +32,7 @@ public class StringUtils
 			return "";
 		}
 		
-		logger.info(text);
 		text = StringEscapeUtils.unescapeHtml(text);
-		logger.info(text);
 		return text;
 	}
 
@@ -45,10 +43,9 @@ public class StringUtils
 			return "";
 		}
 
-		logger.info(text);
 		text = StringEscapeUtils.escapeHtml(text);
-		logger.info(text);
 
 		return text;
 	}
+
 }

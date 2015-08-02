@@ -1,6 +1,15 @@
 		<meta charset="utf-8">
+		<title>${html_title!}<%if(has(html_title))print(" - ");%>${settings.note_name}</title>
+		<meta name="keywords"content="${html_keywords!settings.meta_keywords}" />
+		<meta name="description"content="${html_description!settings.meta_description}"/>
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="author" content="${settings.note_name}" />
+		<meta name="generator" content="JNote" />
+		<meta name="owner" content="JNote Team" />
+		<meta name="revised" content="${settings.note_name}, 2015" />
+		<meta name="copyright" content="JNote" />
+		<link rel="icon" type="image/png" href="${ctx}/favicon.png" />
 		<link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.2.0/css/bootstrap.min.css">
     	<link href="${ctx}/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
     	<link href="${ctx}/css/paraiso.light.css" type="text/css" rel="stylesheet">
@@ -9,3 +18,4 @@
 		<script src="http://cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
 		<script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
 		<![endif]-->
+		${settings.html_head}

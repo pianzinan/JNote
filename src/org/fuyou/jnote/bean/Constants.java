@@ -20,12 +20,9 @@ public class Constants
 	public static String db_url = null;
 	public static String db_user = null;
 	public static String db_pwd = null;
-	public static String contextPath = null;
 	
 	public static String charset = null;
 	public static int pageSize = 20;
 	
-	public static String username = null;
-	public static String password = null;
 	
 }
