@@ -8,7 +8,7 @@ If the hyperlinks in the right-bottom does not bother you please keep them.
 
 JNote is an open source project by Tony that is licensed under Apache License 2.0.
 
-You can see my blog as [an example](http://blog.itbiu.com").
+You can see my blog as [an example](http://blog.itbiu.com")
 
 ##Based on:
 1. MYSQL 5.0+
