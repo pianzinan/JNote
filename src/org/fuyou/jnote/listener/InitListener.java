@@ -1,5 +1,6 @@
 package org.fuyou.jnote.listener;
 
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -41,7 +42,7 @@ public class InitListener implements ServletContextListener
 		Connection conn = null;
 		Statement st = null;
 		ResultSet rs = null;
-
+		InputStream is = null;
 		try
 		{
 			properties.load(getClass().getResourceAsStream("/app_config.txt"));
@@ -62,7 +63,8 @@ public class InitListener implements ServletContextListener
 			
 			if (tables.size() == 0)
 			{// 表结构不完整
-				String []sqls = FileUtils.loadString(getClass().getResourceAsStream("/jnote.sql"), "UTF-8").split(";");
+				is = getClass().getResourceAsStream("/jnote.sql");
+				String []sqls = FileUtils.loadString(is, "UTF-8").split(";");
 				for(String sql:sqls)
 				{
 					if(!StringUtils.isEmptyOrNull(sql))
@@ -113,6 +115,16 @@ public class InitListener implements ServletContextListener
 				{
 					conn.close();
 				} catch (SQLException e)
+				{
+					e.printStackTrace();
+				}
+			}
+			if (is != null)
+			{
+				try
+				{
+					is.close();
+				} catch (Exception e)
 				{
 					e.printStackTrace();
 				}
